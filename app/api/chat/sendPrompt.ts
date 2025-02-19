@@ -1,29 +1,3 @@
-// "use server";
-
-// import { auth } from "@clerk/nextjs/server";
-
-// export const sendPrompt = async (prevState: any, formData: FormData) => {
-//   const { userId } = await auth();
-//   if (!userId) {
-//     return { message: "Unauthorized" };
-//   }
-
-//   const prompt = formData.get("prompt") as string;
-
-//   try {
-//     await fetch("http://localhost:3000/send-prompt", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ prompt }),
-//     });
-//     return { message: "Prompt sent successfully" };
-//   } catch (error) {
-//     console.error("Error sending prompt:", error);
-//     return { message: "Failed to send prompt" };
-//   }
-// };
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
@@ -54,13 +28,16 @@ export const sendPrompt = async (prevState: unknown, formData: FormData) => {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/send-prompt", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ prompt: validatedFields.data.prompt }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_CORE_BACKEND_URL}/send-prompt`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: validatedFields.data.prompt }),
+      }
+    );
 
     const data = (await response.json()) as {
       promptId: string;

@@ -40,7 +40,7 @@ export const useApartmentStream = () => {
   useEffect(() => {
     if (!state?.promptId) return;
     const eventSource = new EventSource(
-      `http://localhost:3000/stream-apartments/${state?.promptId}`
+      `${process.env.NEXT_PUBLIC_CORE_BACKEND_URL}/stream-apartments/${state?.promptId}`
     );
 
     eventSource.onmessage = (event: MessageEvent) => {
